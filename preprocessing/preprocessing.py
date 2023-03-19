@@ -105,7 +105,7 @@ def compute_feature_sum(
     ** May have misinterpreted columns as all signifying different types of toxicity.
     """
     df[output_col] = df.sum(axis = 1, numeric_only = True)
-    
+
     return df
 
 def compute_binary_class_label(
@@ -156,10 +156,48 @@ def create_target_variable(df):
 
     return df
 
+def clean_infinity_features(
+        df,
+        inf_cols = ['max_partial_charge']
+        ):
+    """
+    Remove rows with infinities
+    """
+
+    for col in inf_cols:
+        df = df[~df[col].isin([np.inf,-np.inf])]
+
+    return df
+
+def clean_null_features(
+        df,
+        null_cols = ['max_partial_charge']
+    ):
+    """
+    Remove rows with nulls
+    """
+    for col in null_cols:
+        df = df[~df[col].isna()]
+
+    return df
+
+def clean_features(df):
+    """
+    Remove nulls and infinities
+    """
+    df = clean_infinity_features(df)
+
+    df = clean_null_features(df)
+
+    return df
+
 def compute_full_preprocessing(df):
     """
     Compute end-to-end preprocessing
     """
+    # Compute Original DataFrame Size
+    original_size = df.shape[0]
+
     # Create Molecule Column
     df = create_rdkit_molecule(df)
 
@@ -174,6 +212,17 @@ def compute_full_preprocessing(df):
 
     # Compute Chemistry Features
     df = create_chemistry_features(df)
+
+    # Clean any Infinities in Data
+    df = clean_features(df)
+
+    # Compute Final DataFrame Size
+    final_size = df.shape[0]
+
+    # Print Processing Dataw
+    print(f"Original DataFrame Size: {original_size}")
+    print(f"Processed DataFrame Size: {final_size}")
+    print(f"Processed / Original Size Ratio: {round(final_size/original_size*100,1)}%")
 
     return df
 
