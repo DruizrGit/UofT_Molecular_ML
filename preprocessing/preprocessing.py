@@ -3,6 +3,8 @@ Preprocessing module
 """
 import numpy as np
 from preprocessing.chemistry import *
+from rdkit.Chem import rdMolDescriptors as rdmol
+from rdkit import DataStructs
 
 def filter_null_molecules(
         df,
@@ -156,6 +158,41 @@ def create_target_variable(df):
 
     return df
 
+def compute_morgan_fingerprint_array(
+        mol,
+        radius = 2,
+        nBits = 256,
+        ):
+    """
+    Compute Morgan fingerprint of molecule
+    """
+    fingerprint = rdmol.GetMorganFingerprintAsBitVect(
+        mol, radius=radius, bitInfo={}, nBits=nBits, useChirality=True,
+    )
+    
+    arr = np.zeros((1,), dtype=int)
+    DataStructs.ConvertToNumpyArray(fingerprint, arr)
+
+    return list(arr)
+
+def create_morgan_fingerprint_features(
+        df,
+        molecule_col = 'molecule',
+        radius = 2,
+        nBits = 256
+    ):
+    """
+    Create nBits new columns for Morgan fingerprint
+    """
+
+    fingerprint_cols = [f"finger_{i}" for i in range(nBits)]
+    df[fingerprint_cols] = df.apply(lambda row: compute_morgan_fingerprint_array(row[molecule_col], radius = radius, nBits = nBits), 
+                                    axis = 1, 
+                                    result_type = 'expand'
+                                    )
+
+    return df
+
 def clean_infinity_features(
         df,
         inf_cols = ['max_partial_charge']
@@ -213,13 +250,16 @@ def compute_full_preprocessing(df):
     # Compute Chemistry Features
     df = create_chemistry_features(df)
 
-    # Clean any Infinities in Data
+    # Clean any Nulls / Infinities in Data
     df = clean_features(df)
+
+    # Compute Morgan Fingerprint Features
+    df = create_morgan_fingerprint_features(df)
 
     # Compute Final DataFrame Size
     final_size = df.shape[0]
 
-    # Print Processing Dataw
+    # Print Processing Data
     print(f"Original DataFrame Size: {original_size}")
     print(f"Processed DataFrame Size: {final_size}")
     print(f"Processed / Original Size Ratio: {round(final_size/original_size*100,1)}%")
