@@ -185,7 +185,7 @@ def create_morgan_fingerprint_features(
     Create nBits new columns for Morgan fingerprint
     """
 
-    fingerprint_cols = [f"finger_{i}" for i in range(nBits)]
+    fingerprint_cols = [f"fingerprint_{i}" for i in range(nBits)]
     df[fingerprint_cols] = df.apply(lambda row: compute_morgan_fingerprint_array(row[molecule_col], radius = radius, nBits = nBits), 
                                     axis = 1, 
                                     result_type = 'expand'
