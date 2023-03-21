@@ -1,6 +1,7 @@
 """
 Chemistry Features
 """
+import numpy as np
 import rdkit
 from rdkit.Chem import Descriptors as rdcd
 from rdkit.Chem import rdMolDescriptors as rdmol
@@ -13,8 +14,10 @@ def create_rdkit_molecule(
     """
     Create column with rdkit molecule objects
     """
-    df[output_col] = df[smiles_col].apply(lambda mol: rdkit.Chem.MolFromSmiles(mol))
+    MolFromSmilesVec = np.vectorize(rdkit.Chem.MolFromSmiles)
 
+    df[output_col] = MolFromSmilesVec(df[smiles_col])
+    
     return df
 
 def compute_radical_electrons(
@@ -25,8 +28,9 @@ def compute_radical_electrons(
     """
     Compute number of radical electrons in molecule (unpaired electrons)
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdcd.NumRadicalElectrons(mol))
+    NumRadicalElectronsVec = np.vectorize(rdcd.NumRadicalElectrons)
+
+    df[output_col] = NumRadicalElectronsVec(df[molecule_col])
 
     return df
 
@@ -38,8 +42,9 @@ def compute_exact_molecular_weight(
     """
     Compute molecular weight of molecule
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdcd.ExactMolWt(mol))
+    ExactMolWtVec = np.vectorize(rdcd.ExactMolWt)
+
+    df[output_col] = ExactMolWtVec(df[molecule_col])
 
     return df
 
@@ -51,8 +56,9 @@ def compute_avg_molecular_weight_no_hydrogen(
     """
     Compute average molecular weight of molecule ignoring hydrogens
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdcd.HeavyAtomMolWt(mol))
+    HeavyAtomMolWtVec = np.vectorize(rdcd.HeavyAtomMolWt)
+
+    df[output_col] = HeavyAtomMolWtVec(df[molecule_col])
 
     return df
 
@@ -64,8 +70,9 @@ def compute_valence_electrons(
     """
     Compute number of valence electrons for the molecule
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdcd.NumValenceElectrons(mol))
+    NumValenceElectronsVec = np.vectorize(rdcd.NumValenceElectrons)
+
+    df[output_col] = NumValenceElectronsVec(df[molecule_col])
 
     return df
 
@@ -77,8 +84,9 @@ def compute_avg_molecular_weight(
     """
     Compute average molecular weight of molecule
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdcd.MolWt(mol))
+    MolWtVec = np.vectorize(rdcd.MolWt)
+
+    df[output_col] = MolWtVec(df[molecule_col])
 
     return df
 
@@ -90,8 +98,9 @@ def compute_max_partial_charge(
     """
     Compute maximum partial charge
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdcd.MaxPartialCharge(mol))
+    MaxPartialChargeVec = np.vectorize(rdcd.MaxPartialCharge)
+
+    df[output_col] = MaxPartialChargeVec(df[molecule_col])
 
     return df
 
@@ -103,8 +112,9 @@ def compute_min_partial_charge(
     """
     Compute minimum partial charge
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdcd.MinPartialCharge(mol))
+    MinPartialChargeVec = np.vectorize(rdcd.MinPartialCharge)
+
+    df[output_col] = MinPartialChargeVec(df[molecule_col])
 
     return df
 
@@ -117,8 +127,9 @@ def compute_aliphatic_carbocycles(
     Compute number of aliphatic (containing at least one non-aromatic bond) carbocycles for a molecule.
     * Carbocycle is a ring containing only carbon atoms.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumAliphaticCarbocycles(mol))
+    CalcNumAliphaticCarbocyclesVec = np.vectorize(rdmol.CalcNumAliphaticCarbocycles)
+
+    df[output_col] = CalcNumAliphaticCarbocyclesVec(df[molecule_col])
 
     return df
 
@@ -131,8 +142,9 @@ def compute_aliphatic_heterocycles(
     Compute number of aliphatic (containing at least one non-aromatic bond) heterocycles for a molecule.
     * Heterocycle is a ring containing at least two different elements as members of its ring.
     """
+    CalcNumAliphaticHeterocyclesVec = np.vectorize(rdmol.CalcNumAliphaticHeterocycles)
     
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumAliphaticHeterocycles(mol))
+    df[output_col] = CalcNumAliphaticHeterocyclesVec(df[molecule_col])
 
     return df
 
@@ -145,8 +157,9 @@ def compute_aromatic_carbocycles(
     Compute number of aliphatic carbocycles for a molecule.
     * Carbocycle is a ring containing only carbon atoms.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumAromaticCarbocycles(mol))
+    CalcNumAromaticCarbocyclesVec = np.vectorize(rdmol.CalcNumAromaticCarbocycles)
+
+    df[output_col] = CalcNumAromaticCarbocyclesVec(df[molecule_col])
 
     return df
 
@@ -159,8 +172,9 @@ def compute_aromatic_heterocycles(
     Compute number of aromatic heterocycles for a molecule.
     * Heterocycle is a ring containing at least two different elements as members of its ring.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumAromaticHeterocycles(mol))
+    CalcNumAromaticHeterocyclesVec = np.vectorize(rdmol.CalcNumAromaticHeterocycles)
+
+    df[output_col] = CalcNumAromaticHeterocyclesVec(df[molecule_col])
 
     return df
 
@@ -172,8 +186,9 @@ def compute_amide_bonds(
     """
     Compute number of amide bonds in the molecule.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumAmideBonds(mol))
+    CalcNumAmideBondsVec = np.vectorize(rdmol.CalcNumAmideBonds)
+
+    df[output_col] = CalcNumAmideBondsVec(df[molecule_col])
 
     return df
 
@@ -185,8 +200,9 @@ def compute_num_atoms(
     """
     Compute total number of atoms in the molecule.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumAtoms(mol))
+    CalcNumAtomsVec = np.vectorize(rdmol.CalcNumAtoms)
+
+    df[output_col] = CalcNumAtomsVec(df[molecule_col])
 
     return df
 
@@ -198,8 +214,9 @@ def compute_bridgehead_atoms(
     """
     Compute total number of bridgehead atoms (atoms shared between rings that share at least two bonds) in the molecule
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumBridgeheadAtoms(mol))
+    CalcNumBridgeheadAtomsVec = np.vectorize(rdmol.CalcNumBridgeheadAtoms)
+
+    df[output_col] = CalcNumBridgeheadAtomsVec(df[molecule_col])
 
     return df
 
@@ -211,8 +228,9 @@ def compute_hbond_acceptors(
     """
     Compute number of H-bond acceptors for the molecule.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumHBA(mol))
+    CalcNumHBAVec = np.vectorize(rdmol.CalcNumHBA)
+
+    df[output_col] = CalcNumHBAVec(df[molecule_col])
 
     return df
 
@@ -224,8 +242,9 @@ def compute_hbond_donors(
     """
     Compute number of H-bond donors for the molecule.
     """
+    CalcNumHBDVec = np.vectorize(rdmol.CalcNumHBD)
     
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumHBD(mol))
+    df[output_col] = CalcNumHBDVec(df[molecule_col])
 
     return df
 
@@ -237,8 +256,9 @@ def compute_lipinski_hbond_acceptors(
     """
     Compute number of Lipinski H-bond acceptors for the molecule.
     """
+    CalcNumLipinskiHBAVec = np.vectorize(rdmol.CalcNumLipinskiHBA)
     
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumLipinskiHBA(mol))
+    df[output_col] = CalcNumLipinskiHBAVec(df[molecule_col])
 
     return df
 
@@ -250,8 +270,9 @@ def compute_lipinski_hbond_donors(
     """
     Compute number of Lipinski H-bond donors for the molecule.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumLipinskiHBD(mol))
+    CalcNumLipinskiHBDVec = np.vectorize(rdmol.CalcNumLipinskiHBD)
+
+    df[output_col] = CalcNumLipinskiHBDVec(df[molecule_col])
 
     return df
 
@@ -264,8 +285,9 @@ def compute_heavy_atoms(
     Compute number of heavy atoms for the molecule.
     * Heavy Atom is any atom that is not hydrogen.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumHeavyAtoms(mol))
+    CalcNumHeavyAtomsVec = np.vectorize(rdmol.CalcNumHeavyAtoms)
+
+    df[output_col] = CalcNumHeavyAtomsVec(df[molecule_col])
 
     return df
 
@@ -278,8 +300,9 @@ def compute_hetero_atoms(
     Compute number of heteroatoms for the molecule.
     * Heteroatoms are any atom that is not hydrogen or carbon.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumHeteroatoms(mol))
+    CalcNumHeteroatomsVec = np.vectorize(rdmol.CalcNumHeteroatoms)
+
+    df[output_col] = CalcNumHeteroatomsVec(df[molecule_col])
 
     return df
 
@@ -291,8 +314,9 @@ def compute_rotatable_bonds(
     """
     Compute number of rotatable bonds for the molecule.
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumRotatableBonds(mol))
+    CalcNumRotatableBondsVec = np.vectorize(rdmol.CalcNumRotatableBonds)
+
+    df[output_col] = CalcNumRotatableBondsVec(df[molecule_col])
 
     return df
 
@@ -304,8 +328,9 @@ def compute_spiro_atoms(
     """
     Compute number of spiro atoms (atoms shared between rings that share exactly one atom)
     """
-    
-    df[output_col] = df[molecule_col].apply(lambda mol: rdmol.CalcNumSpiroAtoms(mol))
+    CalcNumSpiroAtomsVec = np.vectorize(rdmol.CalcNumSpiroAtoms)
+
+    df[output_col] = CalcNumSpiroAtomsVec(df[molecule_col])
 
     return df
 

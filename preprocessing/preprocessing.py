@@ -2,9 +2,11 @@
 Preprocessing module
 """
 import numpy as np
+import pandas as pd
 from preprocessing.chemistry import *
 from rdkit.Chem import rdMolDescriptors as rdmol
 from rdkit import DataStructs
+from sklearn.model_selection import train_test_split
 
 def filter_null_molecules(
         df,
@@ -161,7 +163,7 @@ def create_target_variable(df):
 def compute_morgan_fingerprint_array(
         mol,
         radius = 2,
-        nBits = 256,
+        nBits = 256
         ):
     """
     Compute Morgan fingerprint of molecule
@@ -169,11 +171,25 @@ def compute_morgan_fingerprint_array(
     fingerprint = rdmol.GetMorganFingerprintAsBitVect(
         mol, radius=radius, bitInfo={}, nBits=nBits, useChirality=True,
     )
-    
+
     arr = np.zeros((1,), dtype=int)
     DataStructs.ConvertToNumpyArray(fingerprint, arr)
 
-    return list(arr)
+    return arr
+
+def create_subset(
+        df,
+        subset_size = 1,
+        random_state = None
+        ):
+    """
+    Create subset of Dataframe specified by subset size (percentage).
+    """
+    if subset_size == 1:
+        return df
+    else:
+        _, df = train_test_split(df, test_size = subset_size, random_state = random_state)
+        return df
 
 def create_morgan_fingerprint_features(
         df,
@@ -184,12 +200,23 @@ def create_morgan_fingerprint_features(
     """
     Create nBits new columns for Morgan fingerprint
     """
+    # Compute Size of Dataframe
+    size = df.shape[0]
 
-    fingerprint_cols = [f"fingerprint_{i}" for i in range(nBits)]
-    df[fingerprint_cols] = df.apply(lambda row: compute_morgan_fingerprint_array(row[molecule_col], radius = radius, nBits = nBits), 
-                                    axis = 1, 
-                                    result_type = 'expand'
-                                    )
+    # Vectorize Morgan Fingerprint
+    compute_morgan_fingerprint_array_vec = np.vectorize(compute_morgan_fingerprint_array, otypes = [np.ndarray], excluded={'radius', 'nBits'})
+
+    # Fingerprint Column Names
+    fingerprint_cols = [f"fingerprint_{i}" for i in range(256)]
+
+    # Create Fingerprints DataFrame
+    df_fp = pd.DataFrame(np.stack(compute_morgan_fingerprint_array_vec(df[molecule_col], radius = radius, nBits = nBits)).reshape(size,nBits), columns = fingerprint_cols)
+
+    # Reset DataFrame Index
+    df.reset_index(drop = True, inplace = True)
+
+    # Introduce Fingerprint Features
+    df = pd.concat([df,df_fp], axis = 1)
 
     return df
 
@@ -228,10 +255,17 @@ def clean_features(df):
 
     return df
 
-def compute_full_preprocessing(df):
+def compute_full_preprocessing(df, subset_size = 1, random_state = None, dataset = None):
     """
     Compute end-to-end preprocessing
     """
+    # Create Subset if Necessary
+    df = create_subset(df, subset_size=subset_size, random_state=random_state)
+    
+    # Pre-Cleaning
+    if dataset == "pcba":
+        df = df.drop("mol_id", axis = 1)
+
     # Compute Original DataFrame Size
     original_size = df.shape[0]
 
