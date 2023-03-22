@@ -3,8 +3,12 @@ Chemistry Features
 """
 import numpy as np
 import rdkit
-from rdkit.Chem import Descriptors as rdcd
-from rdkit.Chem import rdMolDescriptors as rdmol
+from rdkit.Chem import (
+    Descriptors as rdcd,
+    rdMolDescriptors as rdmol,
+    rdmolfiles,
+)
+
 
 def create_rdkit_molecule(
         df, 
@@ -335,12 +339,17 @@ def compute_spiro_atoms(
     return df
 
 
+def convert_smiles_to_bits(smiles, bits=256):
+    """
+    Convert SMILES to a morgan fingerprint represented as bits.
+    """
+    mol = rdmolfiles.MolFromSmiles(smiles)
 
+    fingerprint = rdmol.GetMorganFingerprintAsBitVect(
+        mol, radius=2, bitInfo={}, nBits=bits, useChirality=True,
+    )
 
+    arr = np.zeros((1,), dtype=int)
+    rdkit.DataStructs.ConvertToNumpyArray(fingerprint, arr)
 
-
-
-
-
-
-
+    return arr
