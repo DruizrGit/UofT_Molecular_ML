@@ -21,7 +21,8 @@ def create_chemistry_features(df):
     """
     Compute all chemistry features. DataFrame requires Molecule Column 'molecule'
     """
-
+    ## Commented out features raise `molecule has no conformers` error. Returns nulls across all rows.
+    
     df = compute_radical_electrons(df)
 
     df = compute_exact_molecular_weight(df)
@@ -65,6 +66,58 @@ def create_chemistry_features(df):
     df = compute_rotatable_bonds(df)
 
     df = compute_spiro_atoms(df)
+
+    #df = compute_asphericity(df)
+
+    df = compute_chi0n(df)
+
+    df = compute_chi0v(df)
+
+    df = compute_chi1n(df)
+
+    df = compute_chi1v(df)
+
+    df = compute_chi2n(df)
+
+    df = compute_chi2v(df)
+
+    df = compute_chi3n(df)
+
+    df = compute_chi3v(df)
+
+    df = compute_chi4n(df)
+
+    df = compute_chi4v(df)
+
+    #df = compute_eccentricity(df)
+
+    df = compute_kappa1(df)
+
+    df = compute_kappa2(df)
+
+    df = compute_kappa3(df)
+
+    df = compute_labute_asa(df)
+
+    #df = compute_NPR1(df)
+
+    #df = compute_NPR2(df)
+
+    #df = compute_PBF(df)
+
+    #df = compute_PMI1(df)
+
+    #df = compute_PMI2(df)
+
+    #df = compute_PMI3(df)
+
+    df = compute_phi(df)
+
+    #df = compute_radius_of_gyration(df)
+
+    #df = compute_spherocity_index(df)
+
+    df = compute_tpsa(df)
 
     return df
 

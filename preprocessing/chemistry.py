@@ -5,6 +5,7 @@ import numpy as np
 import rdkit
 from rdkit.Chem import Descriptors as rdcd
 from rdkit.Chem import rdMolDescriptors as rdmol
+from preprocessing.utils import error_handle_wrapper
 
 def create_rdkit_molecule(
         df, 
@@ -334,8 +335,371 @@ def compute_spiro_atoms(
 
     return df
 
+def compute_asphericity(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'asphericity'
+        ):
+    """
+    Compute asphericity
+    """
+    
+    CalcAsphericityVec = np.vectorize(error_handle_wrapper(rdmol.CalcAsphericity))
 
+    df[output_col] = CalcAsphericityVec(df[molecule_col])
 
+    return df
+
+def compute_chi0n(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi0n'
+        ):
+    """
+    Compute chi0n
+    """
+    CalcChi0nVec = np.vectorize(rdmol.CalcChi0n)
+
+    df[output_col] = CalcChi0nVec(df[molecule_col])
+
+    return df
+
+def compute_chi0v(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi0v'
+        ):
+    """
+    Compute chi0v
+    """
+    CalcChi0vVec = np.vectorize(rdmol.CalcChi0v)
+
+    df[output_col] = CalcChi0vVec(df[molecule_col])
+
+    return df
+
+def compute_chi1n(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi1n'
+        ):
+    """
+    Compute chi1n
+    """
+    Vec = np.vectorize(rdmol.CalcChi1n)
+
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_chi1v(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi1v'
+        ):
+    """
+    Compute chi1v
+    """
+    Vec = np.vectorize(rdmol.CalcChi1v)
+
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_chi2n(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi2n'
+        ):
+    """
+    Compute chi2n
+    """
+    Vec = np.vectorize(rdmol.CalcChi2n)
+
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_chi2v(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi2v'
+        ):
+    """
+    Compute chi2v
+    """
+    Vec = np.vectorize(rdmol.CalcChi2v)
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_chi3n(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi3n'
+        ):
+    """
+    Compute chi3n
+    """
+    Vec = np.vectorize(rdmol.CalcChi3n)
+
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_chi3v(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi3v'
+        ):
+    """
+    Compute chi3v
+    """
+    Vec = np.vectorize(rdmol.CalcChi3v)
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_chi4n(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi4n'
+        ):
+    """
+    Compute chi4n
+    """
+    Vec = np.vectorize(rdmol.CalcChi4n)
+
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_chi4v(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'chi4v'
+        ):
+    """
+    Compute chi4v
+    """
+    Vec = np.vectorize(rdmol.CalcChi4v)
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_eccentricity(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'eccentricity'
+        ):
+    """
+    Compute eccentricity
+    """
+
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcEccentricity))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_kappa1(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'kappa1'
+        ):
+    """
+    Compute kappa1
+    """
+    Vec = np.vectorize(rdmol.CalcKappa1)
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_kappa2(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'kappa2'
+        ):
+    """
+    Compute kappa2
+    """
+    Vec = np.vectorize(rdmol.CalcKappa2)
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_kappa3(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'kappa3'
+        ):
+    """
+    Compute kappa3
+    """
+    Vec = np.vectorize(rdmol.CalcKappa3)
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_labute_asa(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'labute_asa'
+        ):
+    """
+    Compute Labute ASA value for molecule
+    """
+    Vec = np.vectorize(rdmol.CalcLabuteASA)
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_NPR1(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'npr1'
+        ):
+    """
+    Compute NPR1
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcNPR1))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_NPR2(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'npr2'
+        ):
+    """
+    Compute NPR2
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcNPR2))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_PBF(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'pbf'
+        ):
+    """
+    Compute PBF
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcPBF))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_PMI1(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'pmi1'
+        ):
+    """
+    Compute PMI1
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcPMI1))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_PMI2(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'pmi2'
+        ):
+    """
+    Compute PMI2
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcPMI2))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_PMI3(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'pmi3'
+        ):
+    """
+    Compute PMI3
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcPMI3))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_phi(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'phi'
+        ):
+    """
+    Compute PHI
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcPhi))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_radius_of_gyration(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'radius_of_gyration'
+        ):
+    """
+    Compute radius of gyration
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcRadiusOfGyration))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_spherocity_index(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'spherocity_index'
+        ):
+    """
+    Compute spherocity index
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcSpherocityIndex))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
+
+def compute_tpsa(
+        df, 
+        molecule_col = 'molecule',
+        output_col = 'tpsa'
+        ):
+    """
+    Compute TPSA value for molecule
+    """
+    Vec = np.vectorize(error_handle_wrapper(rdmol.CalcTPSA))
+    
+    df[output_col] = Vec(df[molecule_col])
+
+    return df
 
 
 
