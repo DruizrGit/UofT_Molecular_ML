@@ -12,7 +12,7 @@ SCS 3253 group ML project. Develop model to determine toxicity based on molecula
 ## Modules
 <ul>
   <li><b>Preprocessing/Chemistry</b>: Chemical property features for the rdkit molecule objects.</li>
-  <li><b>Preprocessing/Preprocessing</b>: Cleaning features (remove Nulls, infinities), Filter Missing Data, Compute Target Labels and Features</li>
+  <li><b>Preprocessing/Preprocessing</b>: Cleaning features (remove nulls, infinities), filter missing data, compute target labels and features</li>
   <li><b>Preprocessing/Utils</b>: Utility functions (wrapper)</li>
 </ul>
 Possibly Useful Links:
