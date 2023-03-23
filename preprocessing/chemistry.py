@@ -704,11 +704,6 @@ def compute_tpsa(
 
     return df
 
-    arr = np.zeros((1,), dtype=int)
-    rdkit.DataStructs.ConvertToNumpyArray(fingerprint, arr)
-
-    return arr
-
 
 def convert_smiles_to_bits(smiles, bits=256):
     """
