@@ -7,7 +7,7 @@ SCS 3253 group ML project. Develop model to determine toxicity based on molecula
   <li>ToxCast Dataset Assay Information: https://clowder.edap-cluster.com/files/6215520fe4b039b22c7a7836 </li>
   <li>RDKIT Descriptors Library Documentation: https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html </li>
   <li>RDKIT Molecular Descriptors Library Documentation: https://www.rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html </li>
-<ul>
+</ul>
   
 ## Modules
 <ul>
