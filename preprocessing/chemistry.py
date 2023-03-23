@@ -700,8 +700,3 @@ def compute_tpsa(
     df[output_col] = Vec(df[molecule_col])
 
     return df
-
-    arr = np.zeros((1,), dtype=int)
-    rdkit.DataStructs.ConvertToNumpyArray(fingerprint, arr)
-
-    return arr
