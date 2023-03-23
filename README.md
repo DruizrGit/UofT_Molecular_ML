@@ -7,9 +7,9 @@ RDKIT Molecular Description Documentation: https://www.rdkit.org/docs/source/rdk
 
 ## Modules
 <ul>
-  <li>Preprocessing/Chemistry: Chemical property features for the rdkit molecule objects.</li>
-  <li>Preprocessing/Preprocessing: Cleaning features (remove Nulls, infinities), Filter Missing Data, Compute Target Labels and Features</li>
-  <li>Preprocessing/Utils: Utility functions (wrapper)</li>
+  <li><b>Preprocessing/Chemistry</b>: Chemical property features for the rdkit molecule objects.</li>
+  <li><b>Preprocessing/Preprocessing</b>: Cleaning features (remove Nulls, infinities), Filter Missing Data, Compute Target Labels and Features</li>
+  <li><b>Preprocessing/Utils</b>: Utility functions (wrapper)</li>
 </ul>
 Possibly Useful Links:
 
