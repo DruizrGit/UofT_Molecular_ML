@@ -6,10 +6,11 @@ ToxCast Dataset Assay Information: https://clowder.edap-cluster.com/files/621552
 RDKIT Molecular Description Documentation: https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
 
 ## Modules
-# Preprocessing/Chemistry: Chemical property features for the rdkit molecule objects.
-# Preprocessing/Preprocessing: Cleaning features (remove Nulls, infinities), Filter Missing Data, Compute Target Labels and Features 
-# Preprocessing/Utils: Utility functions (wrapper)
-
+<ul>
+  <li>Preprocessing/Chemistry: Chemical property features for the rdkit molecule objects.</li>
+  <li>Preprocessing/Preprocessing: Cleaning features (remove Nulls, infinities), Filter Missing Data, Compute Target Labels and Features</li>
+  <li>Preprocessing/Utils: Utility functions (wrapper)</li>
+</ul>
 Possibly Useful Links:
 
 https://clowder.edap-cluster.com/spaces/62bb560ee4b07abf29f88fef
