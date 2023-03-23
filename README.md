@@ -5,12 +5,10 @@ ToxCast Dataset Assay Information: https://clowder.edap-cluster.com/files/621552
 
 RDKIT Molecular Description Documentation: https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html
 
-## Tasks
-
-<ul>
-  <li>Smiles = 'FAIL' instances need to be filtered out </li>
-  <li>Create Chemical Property Features Module (Molecular Weight, Number of Radical Electrons, Single Bonds, Double Bonds etc.)</li>
-</ul>
+## Modules
+# Preprocessing/Chemistry: Chemical property features for the rdkit molecule objects.
+# Preprocessing/Preprocessing: Cleaning features (remove Nulls, infinities), Filter Missing Data, Compute Target Labels and Features 
+# Preprocessing/Utils: Utility functions (wrapper)
 
 Possibly Useful Links:
 
