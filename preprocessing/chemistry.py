@@ -3,8 +3,11 @@ Chemistry Features
 """
 import numpy as np
 import rdkit
-from rdkit.Chem import Descriptors as rdcd
-from rdkit.Chem import rdMolDescriptors as rdmol
+from rdkit.Chem import (
+    Descriptors as rdcd,
+    rdMolDescriptors as rdmol,
+    rdmolfiles,
+)
 from preprocessing.utils import error_handle_wrapper
 
 def create_rdkit_molecule(
@@ -700,6 +703,22 @@ def compute_tpsa(
     df[output_col] = Vec(df[molecule_col])
 
     return df
+
+    arr = np.zeros((1,), dtype=int)
+    rdkit.DataStructs.ConvertToNumpyArray(fingerprint, arr)
+
+    return arr
+
+
+def convert_smiles_to_bits(smiles, bits=256):
+    """
+    Convert SMILES to a morgan fingerprint represented as bits.
+    """
+    mol = rdmolfiles.MolFromSmiles(smiles)
+
+    fingerprint = rdmol.GetMorganFingerprintAsBitVect(
+        mol, radius=2, bitInfo={}, nBits=bits, useChirality=True,
+    )
 
     arr = np.zeros((1,), dtype=int)
     rdkit.DataStructs.ConvertToNumpyArray(fingerprint, arr)
